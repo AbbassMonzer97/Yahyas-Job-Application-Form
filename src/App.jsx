@@ -1,6 +1,6 @@
-import { useState } from "react"
-import Header from "./components/Header"
-import Footer from "./components/Footer"
+import { useState } from "react";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import {
   SectionCard,
   TextInput,
@@ -8,7 +8,17 @@ import {
   Select,
   RadioGroup,
   Label,
-} from "./components/ui"
+} from "./components/ui";
+import {
+  UserIcon,
+  BriefcaseIcon,
+  AwardIcon,
+  GraduationIcon,
+  CalendarIcon,
+  UploadIcon,
+  ClipboardIcon,
+  PositionIcon,
+} from "./components/icons";
 import {
   AREAS,
   POSITIONS,
@@ -16,9 +26,9 @@ import {
   EXPERIENCE_YEARS,
   EDUCATION_LEVELS,
   START_OPTIONS,
-} from "./data"
+} from "./data";
 
-const YES_NO = ["Yes", "No"]
+const YES_NO = ["Yes", "No"];
 
 const INITIAL = {
   fullName: "",
@@ -41,7 +51,7 @@ const INITIAL = {
   transportation: "",
   whyJoin: "",
   prevExperience: "",
-}
+};
 
 function PositionExamples() {
   return (
@@ -55,43 +65,38 @@ function PositionExamples() {
             key={p}
             className="flex items-center gap-2 text-[13px] text-brand-green"
           >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-4 w-4 shrink-0 fill-none stroke-brand-olive"
-              strokeWidth="1.8"
-            >
-              <rect x="3" y="7" width="18" height="13" rx="2" />
-              <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" />
-            </svg>
+            <span className="text-brand-olive">
+              <PositionIcon name={p} />
+            </span>
             {p}
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 function CvUpload({ file, onFile, error }) {
-  const [dragging, setDragging] = useState(false)
+  const [dragging, setDragging] = useState(false);
 
   const handleFiles = (files) => {
-    const f = files?.[0]
-    if (f) onFile(f)
-  }
+    const f = files?.[0];
+    if (f) onFile(f);
+  };
 
   return (
     <div>
       <Label required>Upload Your CV</Label>
       <label
         onDragOver={(e) => {
-          e.preventDefault()
-          setDragging(true)
+          e.preventDefault();
+          setDragging(true);
         }}
         onDragLeave={() => setDragging(false)}
         onDrop={(e) => {
-          e.preventDefault()
-          setDragging(false)
-          handleFiles(e.dataTransfer.files)
+          e.preventDefault();
+          setDragging(false);
+          handleFiles(e.dataTransfer.files);
         }}
         className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-7 text-center transition ${
           dragging
@@ -99,7 +104,9 @@ function CvUpload({ file, onFile, error }) {
             : "border-brand-olive/40 bg-brand-cream/50 hover:bg-brand-cream"
         }`}
       >
-        <img src="/assets/ic-upload.png" alt="" className="mb-2 h-9 w-9 object-contain" />
+        <span className="mb-2 text-brand-olive [&>svg]:h-10 [&>svg]:w-10">
+          <UploadIcon />
+        </span>
         {file ? (
           <span className="text-sm font-medium text-brand-green">
             {file.name}
@@ -121,13 +128,17 @@ function CvUpload({ file, onFile, error }) {
       </label>
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </div>
-  )
+  );
 }
 
 function SuccessCard({ onReset }) {
   return (
     <div className="mx-auto my-16 max-w-md rounded-xl bg-white p-8 text-center shadow-sm ring-1 ring-black/5">
-      <img src="/assets/ic-thankyou.png" alt="" className="mx-auto h-16 w-16 object-contain" />
+      <img
+        src="/assets/ic-thankyou.png"
+        alt=""
+        className="mx-auto h-16 w-16 object-contain"
+      />
       <h2 className="mt-4 text-xl font-bold uppercase text-brand-dark">
         Thank you for applying to Yahya's!
       </h2>
@@ -142,66 +153,66 @@ function SuccessCard({ onReset }) {
         Submit another application
       </button>
     </div>
-  )
+  );
 }
 
 export default function App() {
-  const [form, setForm] = useState(INITIAL)
-  const [cv, setCv] = useState(null)
-  const [errors, setErrors] = useState({})
-  const [submitted, setSubmitted] = useState(false)
+  const [form, setForm] = useState(INITIAL);
+  const [cv, setCv] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
 
   const set = (key) => (value) => {
-    const v = value?.target ? value.target.value : value
-    setForm((f) => ({ ...f, [key]: v }))
-    setErrors((e) => ({ ...e, [key]: undefined }))
-  }
+    const v = value?.target ? value.target.value : value;
+    setForm((f) => ({ ...f, [key]: v }));
+    setErrors((e) => ({ ...e, [key]: undefined }));
+  };
 
   const handleCv = (f) => {
     if (f.type !== "application/pdf") {
-      setErrors((e) => ({ ...e, cv: "Only PDF files are allowed." }))
-      return
+      setErrors((e) => ({ ...e, cv: "Only PDF files are allowed." }));
+      return;
     }
     if (f.size > 10 * 1024 * 1024) {
-      setErrors((e) => ({ ...e, cv: "File must be 10 MB or smaller." }))
-      return
+      setErrors((e) => ({ ...e, cv: "File must be 10 MB or smaller." }));
+      return;
     }
-    setCv(f)
-    setErrors((e) => ({ ...e, cv: undefined }))
-  }
+    setCv(f);
+    setErrors((e) => ({ ...e, cv: undefined }));
+  };
 
   const validate = () => {
-    const e = {}
-    if (!form.fullName.trim()) e.fullName = "Full name is required."
-    if (!form.mobile.trim()) e.mobile = "Mobile number is required."
+    const e = {};
+    if (!form.fullName.trim()) e.fullName = "Full name is required.";
+    if (!form.mobile.trim()) e.mobile = "Mobile number is required.";
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = "Enter a valid email address."
-    if (!form.area) e.area = "Please select your area."
-    if (!form.position) e.position = "Please select a position."
-    if (!form.yearsExp) e.yearsExp = "Please select your experience."
-    if (!cv) e.cv = "Please upload your CV (PDF)."
-    return e
-  }
+      e.email = "Enter a valid email address.";
+    if (!form.area) e.area = "Please select your area.";
+    if (!form.position) e.position = "Please select a position.";
+    if (!form.yearsExp) e.yearsExp = "Please select your experience.";
+    if (!cv) e.cv = "Please upload your CV (PDF).";
+    return e;
+  };
 
   const handleSubmit = (ev) => {
-    ev.preventDefault()
-    const e = validate()
-    setErrors(e)
+    ev.preventDefault();
+    const e = validate();
+    setErrors(e);
     if (Object.keys(e).length > 0) {
-      const first = document.querySelector("[data-error='true']")
-      first?.scrollIntoView({ behavior: "smooth", block: "center" })
-      return
+      const first = document.querySelector("[data-error='true']");
+      first?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
     }
-    setSubmitted(true)
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+    setSubmitted(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const reset = () => {
-    setForm(INITIAL)
-    setCv(null)
-    setErrors({})
-    setSubmitted(false)
-  }
+    setForm(INITIAL);
+    setCv(null);
+    setErrors({});
+    setSubmitted(false);
+  };
 
   return (
     <div className="min-h-screen bg-[#e9ebe0] py-6 sm:py-10">
@@ -211,9 +222,13 @@ export default function App() {
         {submitted ? (
           <SuccessCard onReset={reset} />
         ) : (
-          <form onSubmit={handleSubmit} noValidate className="px-5 py-8 sm:px-10">
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+            className="px-5 py-8 sm:px-10"
+          >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <SectionCard icon="/assets/ic-personal.png" title="1. Personal Information">
+              <SectionCard icon={<UserIcon />} title="1. Personal Information">
                 <div className="space-y-4">
                   <TextInput
                     label="Full Name"
@@ -269,7 +284,10 @@ export default function App() {
                 </div>
               </SectionCard>
 
-              <SectionCard icon="/assets/ic-position.png" title="2. Position Applying For">
+              <SectionCard
+                icon={<BriefcaseIcon />}
+                title="2. Position Applying For"
+              >
                 <div className="space-y-4">
                   <Select
                     label="Position Applied For"
@@ -292,7 +310,7 @@ export default function App() {
                 </div>
               </SectionCard>
 
-              <SectionCard icon="/assets/ic-experience.png" title="3. Experience">
+              <SectionCard icon={<AwardIcon />} title="3. Experience">
                 <div className="space-y-4">
                   <RadioGroup
                     label="Are you currently employed?"
@@ -329,7 +347,7 @@ export default function App() {
                 </div>
               </SectionCard>
 
-              <SectionCard icon="/assets/ic-education.png" title="4. Education">
+              <SectionCard icon={<GraduationIcon />} title="4. Education">
                 <div className="space-y-4">
                   <Select
                     label="Highest Education Level"
@@ -346,7 +364,7 @@ export default function App() {
                 </div>
               </SectionCard>
 
-              <SectionCard icon="/assets/ic-availability.png" title="5. Availability">
+              <SectionCard icon={<CalendarIcon />} title="5. Availability">
                 <div className="space-y-4">
                   <Select
                     label="When can you start?"
@@ -372,24 +390,26 @@ export default function App() {
                 </div>
               </SectionCard>
 
-              <SectionCard icon="/assets/ic-upload.png" title="6. CV Upload">
+              <SectionCard icon={<UploadIcon />} title="6. CV Upload">
                 <CvUpload file={cv} onFile={handleCv} error={errors.cv} />
               </SectionCard>
 
               <SectionCard
-                icon="/assets/ic-additional.png"
+                icon={<ClipboardIcon />}
                 title="7. Additional Information"
                 className="lg:col-span-2"
               >
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <TextArea
                     label="Why would you like to join Yahya's?"
+                    labelClassName="sm:min-h-[2.6rem]"
                     placeholder="Your answer"
                     value={form.whyJoin}
                     onChange={set("whyJoin")}
                   />
                   <TextArea
                     label="Do you have previous experience in fruits, vegetables, supermarkets, retail, or customer service?"
+                    labelClassName="sm:min-h-[2.6rem]"
                     placeholder="Your answer"
                     value={form.prevExperience}
                     onChange={set("prevExperience")}
@@ -401,7 +421,7 @@ export default function App() {
             <div className="mt-8 flex justify-center">
               <button
                 type="submit"
-                className="rounded-full bg-brand-dark px-10 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg transition hover:bg-brand-green hover:shadow-xl active:scale-95"
+                className="cursor-pointer rounded-full bg-brand-dark px-10 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg transition hover:bg-brand-green hover:shadow-xl active:scale-95"
               >
                 Submit Application
               </button>
@@ -412,5 +432,5 @@ export default function App() {
         <Footer />
       </div>
     </div>
-  )
+  );
 }

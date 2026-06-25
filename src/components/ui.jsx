@@ -3,9 +3,9 @@ export function SectionCard({ icon, title, children, className = "" }) {
     <section
       className={`rounded-xl bg-white shadow-sm ring-1 ring-black/5 overflow-hidden ${className}`}
     >
-      <header className="flex items-center gap-3 bg-brand-dark px-4 py-2.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15">
-          <img src={icon} alt="" className="h-4 w-4 object-contain" />
+      <header className="flex items-center gap-3 bg-brand-dark px-4 py-2">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white">
+          {icon}
         </span>
         <h2 className="text-sm font-semibold uppercase tracking-wide text-white">
           {title}
@@ -13,20 +13,22 @@ export function SectionCard({ icon, title, children, className = "" }) {
       </header>
       <div className="p-5">{children}</div>
     </section>
-  )
+  );
 }
 
-export function Label({ children, required }) {
+export function Label({ children, required, className = "" }) {
   return (
-    <label className="mb-1.5 block text-[13px] font-medium text-brand-green">
+    <label
+      className={`mb-1.5 block text-[13px] font-medium text-brand-green ${className}`}
+    >
       {children}
       {required && <span className="ml-0.5 text-red-600">*</span>}
     </label>
-  )
+  );
 }
 
 const fieldBase =
-  "w-full rounded-md border border-brand-olive/40 bg-brand-cream/40 px-3 py-2 text-sm text-brand-green placeholder-brand-olive/60 outline-none transition focus:border-brand-olive focus:ring-2 focus:ring-brand-olive/30"
+  "w-full rounded-md border border-brand-olive/40 bg-brand-cream/40 px-3 py-2 text-sm text-brand-green placeholder-brand-olive/60 outline-none transition focus:border-brand-olive focus:ring-2 focus:ring-brand-olive/30";
 
 export function TextInput({ label, required, error, ...props }) {
   return (
@@ -35,20 +37,31 @@ export function TextInput({ label, required, error, ...props }) {
       <input className={fieldBase} {...props} />
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </div>
-  )
+  );
 }
 
-export function TextArea({ label, required, error, ...props }) {
+export function TextArea({ label, required, error, labelClassName, ...props }) {
   return (
     <div>
-      {label && <Label required={required}>{label}</Label>}
+      {label && (
+        <Label required={required} className={labelClassName}>
+          {label}
+        </Label>
+      )}
       <textarea rows={4} className={`${fieldBase} resize-none`} {...props} />
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </div>
-  )
+  );
 }
 
-export function Select({ label, required, error, options, placeholder, ...props }) {
+export function Select({
+  label,
+  required,
+  error,
+  options,
+  placeholder,
+  ...props
+}) {
   return (
     <div>
       {label && <Label required={required}>{label}</Label>}
@@ -82,10 +95,18 @@ export function Select({ label, required, error, options, placeholder, ...props 
       </div>
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </div>
-  )
+  );
 }
 
-export function RadioGroup({ label, required, name, options, value, onChange, error }) {
+export function RadioGroup({
+  label,
+  required,
+  name,
+  options,
+  value,
+  onChange,
+  error,
+}) {
   return (
     <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
       {label && (
@@ -114,5 +135,5 @@ export function RadioGroup({ label, required, name, options, value, onChange, er
       </div>
       {error && <p className="w-full text-xs text-red-600">{error}</p>}
     </div>
-  )
+  );
 }
