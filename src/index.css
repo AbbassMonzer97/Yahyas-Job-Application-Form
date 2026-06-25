@@ -18,3 +18,56 @@ body {
   font-family: var(--font-sans);
   background-color: #e9ebe0;
 }
+
+@keyframes step-in-forward {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes step-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes step-header-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.step-animate-forward {
+  animation: step-in-forward 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.step-animate-back {
+  animation: step-in-back 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.step-header-animate {
+  animation: step-header-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-animate-forward,
+  .step-animate-back,
+  .step-header-animate {
+    animation: none;
+  }
+}
