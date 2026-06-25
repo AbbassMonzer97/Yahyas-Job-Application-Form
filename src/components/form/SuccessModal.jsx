@@ -21,9 +21,30 @@ export default function SuccessModal({ open, onClose }) {
       onClick={onClose}
     >
       <div
-        className="success-modal-content relative mx-auto w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-2xl ring-1 ring-black/5"
+        className="success-modal-content relative mx-auto w-full max-w-md rounded-2xl bg-white p-8 pt-10 text-center shadow-2xl ring-1 ring-black/5"
         onClick={(e) => e.stopPropagation()}
       >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-4 top-4 cursor-pointer rounded-full p-1.5 text-brand-olive transition hover:bg-brand-cream hover:text-brand-dark"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5"
+            aria-hidden="true"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+
         <img
           src="/assets/ic-thankyou.png"
           alt=""
@@ -39,13 +60,6 @@ export default function SuccessModal({ open, onClose }) {
           Your application has been received successfully and will be reviewed
           by our HR team. Only shortlisted candidates will be contacted.
         </p>
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-6 cursor-pointer rounded-full bg-brand-dark px-8 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-green active:scale-95"
-        >
-          Submit another application
-        </button>
       </div>
     </div>
   );

@@ -6,13 +6,7 @@ import {
   Label,
 } from "../ui";
 import {
-  UserIcon,
-  BriefcaseIcon,
-  AwardIcon,
-  GraduationIcon,
-  CalendarIcon,
   UploadIcon,
-  ClipboardIcon,
   PositionIcon,
 } from "../icons";
 import {
@@ -26,16 +20,6 @@ import {
 import { useState } from "react";
 
 const YES_NO = ["Yes", "No"];
-
-export const FORM_STEPS = [
-  { key: "personal", icon: UserIcon, title: "Personal Information" },
-  { key: "position", icon: BriefcaseIcon, title: "Position Applying For" },
-  { key: "experience", icon: AwardIcon, title: "Experience" },
-  { key: "education", icon: GraduationIcon, title: "Education" },
-  { key: "availability", icon: CalendarIcon, title: "Availability" },
-  { key: "cv", icon: UploadIcon, title: "CV Upload" },
-  { key: "additional", icon: ClipboardIcon, title: "Additional Information" },
-];
 
 export function PositionExamples() {
   return (
@@ -159,6 +143,15 @@ export function PersonalSection({ form, set, errors }) {
         value={form.gender}
         onChange={set("gender")}
       />
+      <TextInput
+        label="Address"
+        required
+        placeholder="Street, building, city"
+        value={form.address}
+        onChange={set("address")}
+        error={errors.address}
+        data-error={!!errors.address}
+      />
       <Select
         label="Area of Residence"
         required
@@ -229,9 +222,12 @@ export function ExperienceSection({ form, set, errors }) {
         onChange={set("lastCompany")}
       />
       <TextInput
-        label="Expected Salary (Optional)"
+        label="Expected Salary"
+        required
         value={form.expectedSalary}
         onChange={set("expectedSalary")}
+        error={errors.expectedSalary}
+        data-error={!!errors.expectedSalary}
       />
     </div>
   );
@@ -303,31 +299,4 @@ export function AdditionalSection({ form, set }) {
       />
     </div>
   );
-}
-
-export function renderStepContent(stepKey, props) {
-  switch (stepKey) {
-    case "personal":
-      return <PersonalSection {...props} />;
-    case "position":
-      return <PositionSection {...props} />;
-    case "experience":
-      return <ExperienceSection {...props} />;
-    case "education":
-      return <EducationSection {...props} />;
-    case "availability":
-      return <AvailabilitySection {...props} />;
-    case "cv":
-      return (
-        <CvUpload
-          file={props.cv}
-          onFile={props.handleCv}
-          error={props.errors.cv}
-        />
-      );
-    case "additional":
-      return <AdditionalSection {...props} />;
-    default:
-      return null;
-  }
 }

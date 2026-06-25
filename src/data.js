@@ -8,6 +8,7 @@ export const AREAS = [
 ]
 
 export const POSITIONS = [
+  "HR Manager",
   "Cashier",
   "Sales Representative",
   "Supervisor",
@@ -19,13 +20,14 @@ export const POSITIONS = [
   "Delivery Driver",
   "Procurement",
   "Customer Service",
-  "Other",
+ 
 ]
 
 export const BRANCHES = [
   "Jal El Dib",
   "St. Therese",
   "Airport Road",
+  "St. Therese - Headquarters",
   "Any Branch",
 ]
 

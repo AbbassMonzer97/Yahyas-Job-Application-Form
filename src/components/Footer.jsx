@@ -2,7 +2,7 @@ const SOCIAL_LINKS = {
   facebook: "https://www.facebook.com/share/1Cbh16iCmb/?mibextid=wwXIfr",
   instagram: "https://www.instagram.com/yahyas.lb?utm_source=qr",
   linkedin: "https://www.linkedin.com/company/yahya-s/",
-}
+};
 
 function SocialIcon({ href, children, label }) {
   return (
@@ -15,15 +15,15 @@ function SocialIcon({ href, children, label }) {
     >
       {children}
     </a>
-  )
+  );
 }
 
 export default function Footer() {
   return (
     <footer>
       <div className="bg-brand-cream px-6 py-6 sm:px-10">
-        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 sm:flex-row sm:items-center">
-          <div className="flex items-start gap-3">
+        <div className="mx-auto flex max-w-5xl flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3 sm:items-center">
             <img
               src="/assets/ic-thankyou.png"
               alt=""
@@ -41,8 +41,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-right">
-            <div>
+          <div className="ml-[20px] flex items-start justify-center gap-2 sm:ml-0 sm:items-center">
+            <div className="text-center">
               <p className="font-script text-3xl leading-none text-brand-dark">
                 Grow with us.
               </p>
@@ -53,16 +53,16 @@ export default function Footer() {
             <img
               src="/assets/ic-leaves.png"
               alt=""
-              className="h-8 w-8 object-contain"
+              className="mt-1 h-8 w-8 shrink-0 object-contain"
             />
           </div>
         </div>
       </div>
 
-      <div className="bg-brand-dark px-6 py-4 sm:px-10">
-        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 text-white sm:flex-row">
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold uppercase tracking-wide">
+      <div className="bg-brand-dark px-6 py-5 sm:px-10 sm:py-4">
+        <div className="mx-auto flex max-w-5xl flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center justify-center gap-3 sm:justify-start">
+            <span className="text-xs font-semibold uppercase tracking-wide text-white">
               Follow us
             </span>
             <div className="flex items-center gap-2">
@@ -96,8 +96,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-center text-white">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/70">
+          <div className="-ml-[10px] flex items-start justify-center gap-2 text-white sm:ml-0 sm:items-center">
+            <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/70">
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
                 <circle
                   cx="12"
@@ -113,7 +113,7 @@ export default function Footer() {
                 />
               </svg>
             </span>
-            <div className="text-xs">
+            <div className="text-left text-xs">
               <p className="font-semibold uppercase tracking-wide">
                 Visit our website
               </p>
@@ -121,13 +121,13 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-right">
+          <div className="flex items-start justify-center gap-2 text-white sm:items-center sm:justify-end">
             <img
               src="/assets/ic-cherry.png"
               alt=""
-              className="h-6 w-6 object-contain"
+              className="mt-0.5 h-6 w-6 shrink-0 object-contain"
             />
-            <p className="text-xs font-medium leading-tight">
+            <p className="text-left text-xs font-medium leading-tight sm:text-right">
               FRESHNESS YOU CAN TRUST,
               <br />
               QUALITY YOU CAN TASTE.
