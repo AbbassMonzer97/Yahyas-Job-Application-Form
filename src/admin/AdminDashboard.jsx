@@ -368,14 +368,14 @@ function SplitView({
 }) {
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col lg:flex-row">
-      <aside className="flex w-full shrink-0 flex-col border-b border-brand-olive/20 bg-brand-cream lg:w-80 lg:border-b-0 lg:border-r">
-        <div className="border-b border-brand-olive/10 px-4 py-2.5">
+      <aside className="flex min-h-0 w-full shrink-0 flex-col border-b border-brand-olive/20 bg-brand-cream lg:w-80 lg:border-b-0 lg:border-r">
+        <div className="shrink-0 border-b border-brand-olive/10 px-4 py-2.5">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-olive">
             Applicants
           </p>
         </div>
 
-        <div className="max-h-48 overflow-y-auto lg:max-h-none lg:flex-1">
+        <div className="min-h-0 max-h-48 flex-1 overflow-y-auto lg:max-h-none">
           {loading || filtered.length === 0 ? (
             <EmptyListMessage loading={loading} />
           ) : (
