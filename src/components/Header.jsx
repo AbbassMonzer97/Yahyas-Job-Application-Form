@@ -3,7 +3,7 @@ export default function Header() {
     <header className="relative">
       <div className="h-10 bg-brand-dark" />
 
-      <div className="relative bg-brand-cream px-6 pt-6 pb-20 sm:px-10 sm:pt-8 sm:pb-24">
+      <div className="relative bg-brand-cream px-6 pt-4 pb-12 sm:px-10 sm:pt-5 sm:pb-14">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 sm:flex-row sm:items-center">
           <div className="flex shrink-0 items-center justify-center">
             <img
@@ -13,7 +13,7 @@ export default function Header() {
             />
           </div>
 
-          <div className="hidden h-20 w-px bg-brand-olive/40 sm:block" />
+          <div className="hidden h-28 w-[3px] rounded-full bg-brand-olive/70 sm:block" />
 
           <div className="text-center sm:text-left">
             <h1 className="text-2xl font-bold uppercase tracking-tight text-brand-dark sm:text-3xl">
