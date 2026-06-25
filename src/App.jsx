@@ -22,6 +22,7 @@ import {
 } from "./components/form/FormSections";
 import FormStepper from "./components/form/FormStepper";
 import ViewToggle from "./components/form/ViewToggle";
+import SuccessModal from "./components/form/SuccessModal";
 
 const INITIAL = {
   fullName: "",
@@ -46,38 +47,13 @@ const INITIAL = {
   prevExperience: "",
 };
 
-function SuccessCard({ onReset }) {
-  return (
-    <div className="mx-auto my-16 max-w-md rounded-xl bg-white p-8 text-center shadow-sm ring-1 ring-black/5">
-      <img
-        src="/assets/ic-thankyou.png"
-        alt=""
-        className="mx-auto h-16 w-16 object-contain"
-      />
-      <h2 className="mt-4 text-xl font-bold uppercase text-brand-dark">
-        Thank you for applying to Yahya's!
-      </h2>
-      <p className="mt-2 text-sm text-brand-olive">
-        Your application has been received successfully and will be reviewed by
-        our HR team. Only shortlisted candidates will be contacted.
-      </p>
-      <button
-        type="button"
-        onClick={onReset}
-        className="mt-6 cursor-pointer rounded-md bg-brand-dark px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-green"
-      >
-        Submit another application
-      </button>
-    </div>
-  );
-}
-
 export default function App() {
   const [form, setForm] = useState(INITIAL);
   const [cv, setCv] = useState(null);
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [viewMode, setViewMode] = useState("full");
+  const [stepperKey, setStepperKey] = useState(0);
 
   const set = (key) => (value) => {
     const v = value?.target ? value.target.value : value;
@@ -111,6 +87,13 @@ export default function App() {
     return e;
   };
 
+  const clearForm = () => {
+    setForm(INITIAL);
+    setCv(null);
+    setErrors({});
+    setStepperKey((k) => k + 1);
+  };
+
   const handleSubmit = (ev) => {
     ev.preventDefault();
     const e = validate();
@@ -120,104 +103,89 @@ export default function App() {
       first?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    clearForm();
+    setShowSuccess(true);
   };
 
-  const reset = () => {
-    setForm(INITIAL);
-    setCv(null);
-    setErrors({});
-    setSubmitted(false);
-  };
+  const closeSuccess = () => setShowSuccess(false);
 
   const sectionProps = { form, set, errors };
 
   return (
     <div className="min-h-screen bg-[#e9ebe0] py-6 sm:py-10">
-      <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-brand-cream shadow-xl">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl bg-brand-cream shadow-xl">
         <Header />
 
-        {submitted ? (
-          <SuccessCard onReset={reset} />
+        <ViewToggle mode={viewMode} onChange={setViewMode} />
+
+        {viewMode === "stepper" ? (
+          <FormStepper
+            key={stepperKey}
+            form={form}
+            set={set}
+            cv={cv}
+            handleCv={handleCv}
+            errors={errors}
+            setErrors={setErrors}
+            onSubmit={handleSubmit}
+          />
         ) : (
-          <>
-            <ViewToggle mode={viewMode} onChange={setViewMode} />
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+            className="px-5 py-8 sm:px-10"
+          >
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <SectionCard icon={<UserIcon />} title="1. Personal Information">
+                <PersonalSection {...sectionProps} />
+              </SectionCard>
 
-            {viewMode === "stepper" ? (
-              <FormStepper
-                form={form}
-                set={set}
-                cv={cv}
-                handleCv={handleCv}
-                errors={errors}
-                setErrors={setErrors}
-                onSubmit={handleSubmit}
-              />
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                noValidate
-                className="px-5 py-8 sm:px-10"
+              <SectionCard
+                icon={<BriefcaseIcon />}
+                title="2. Position Applying For"
               >
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                  <SectionCard
-                    icon={<UserIcon />}
-                    title="1. Personal Information"
-                  >
-                    <PersonalSection {...sectionProps} />
-                  </SectionCard>
+                <PositionSection {...sectionProps} />
+              </SectionCard>
 
-                  <SectionCard
-                    icon={<BriefcaseIcon />}
-                    title="2. Position Applying For"
-                  >
-                    <PositionSection {...sectionProps} />
-                  </SectionCard>
+              <SectionCard icon={<AwardIcon />} title="3. Experience">
+                <ExperienceSection {...sectionProps} />
+              </SectionCard>
 
-                  <SectionCard icon={<AwardIcon />} title="3. Experience">
-                    <ExperienceSection {...sectionProps} />
-                  </SectionCard>
+              <SectionCard icon={<GraduationIcon />} title="4. Education">
+                <EducationSection {...sectionProps} />
+              </SectionCard>
 
-                  <SectionCard icon={<GraduationIcon />} title="4. Education">
-                    <EducationSection {...sectionProps} />
-                  </SectionCard>
+              <SectionCard icon={<CalendarIcon />} title="5. Availability">
+                <AvailabilitySection {...sectionProps} />
+              </SectionCard>
 
-                  <SectionCard icon={<CalendarIcon />} title="5. Availability">
-                    <AvailabilitySection {...sectionProps} />
-                  </SectionCard>
+              <SectionCard icon={<UploadIcon />} title="6. CV Upload">
+                <CvUpload file={cv} onFile={handleCv} error={errors.cv} />
+              </SectionCard>
 
-                  <SectionCard icon={<UploadIcon />} title="6. CV Upload">
-                    <CvUpload
-                      file={cv}
-                      onFile={handleCv}
-                      error={errors.cv}
-                    />
-                  </SectionCard>
+              <SectionCard
+                icon={<ClipboardIcon />}
+                title="7. Additional Information"
+                className="lg:col-span-2"
+              >
+                <AdditionalSection {...sectionProps} />
+              </SectionCard>
+            </div>
 
-                  <SectionCard
-                    icon={<ClipboardIcon />}
-                    title="7. Additional Information"
-                    className="lg:col-span-2"
-                  >
-                    <AdditionalSection {...sectionProps} />
-                  </SectionCard>
-                </div>
-
-                <div className="mt-8 flex justify-center">
-                  <button
-                    type="submit"
-                    className="cursor-pointer rounded-full bg-brand-dark px-10 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg transition hover:bg-brand-green hover:shadow-xl active:scale-95"
-                  >
-                    Submit Application
-                  </button>
-                </div>
-              </form>
-            )}
-          </>
+            <div className="mt-8 flex justify-center">
+              <button
+                type="submit"
+                className="cursor-pointer rounded-full bg-brand-dark px-10 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg transition hover:bg-brand-green hover:shadow-xl active:scale-95"
+              >
+                Submit Application
+              </button>
+            </div>
+          </form>
         )}
 
         <Footer />
+
+        <SuccessModal open={showSuccess} onClose={closeSuccess} />
       </div>
     </div>
   );

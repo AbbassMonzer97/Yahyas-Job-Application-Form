@@ -67,7 +67,39 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .step-animate-forward,
   .step-animate-back,
-  .step-header-animate {
+  .step-header-animate,
+  .success-modal-backdrop,
+  .success-modal-content {
     animation: none;
   }
+}
+
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.success-modal-backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  animation: modal-backdrop-in 0.3s ease-out both;
+}
+
+.success-modal-content {
+  animation: modal-content-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
