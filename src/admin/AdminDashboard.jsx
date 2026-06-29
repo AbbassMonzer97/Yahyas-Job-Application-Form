@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { POSITIONS } from "../data";
 import { useAuth } from "../lib/AuthContext";
 import { supabase } from "../lib/supabaseClient";
 import {
@@ -553,6 +554,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
+  const [positionFilter, setPositionFilter] = useState("");
   const [viewMode, setViewMode] = useState("split");
   const [selectedId, setSelectedId] = useState(null);
   const [expandedId, setExpandedId] = useState(null);
@@ -596,11 +598,24 @@ export default function AdminDashboard() {
     fetchApplications();
   }, [fetchApplications]);
 
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return applications;
+  const positionOptions = useMemo(() => {
+    const fromApps = applications
+      .map((row) => row.position)
+      .filter((p) => p && p !== "-");
+    return [...new Set([...POSITIONS, ...fromApps])];
+  }, [applications]);
 
-    return applications.filter((row) => {
+  const filtered = useMemo(() => {
+    let rows = applications;
+
+    if (positionFilter) {
+      rows = rows.filter((row) => row.position === positionFilter);
+    }
+
+    const query = search.trim().toLowerCase();
+    if (!query) return rows;
+
+    return rows.filter((row) => {
       const haystack = [
         row.full_name,
         row.position,
@@ -615,7 +630,7 @@ export default function AdminDashboard() {
 
       return haystack.includes(query);
     });
-  }, [applications, search]);
+  }, [applications, search, positionFilter]);
 
   useEffect(() => {
     if (filtered.length === 0) {
@@ -730,6 +745,44 @@ export default function AdminDashboard() {
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full rounded-md border border-white/20 bg-white/10 py-2 pl-9 pr-3 text-sm text-white placeholder-white/50 outline-none transition focus:border-white/40 focus:ring-2 focus:ring-white/20"
                 />
+              </div>
+              <div className="relative w-full sm:w-52">
+                <label htmlFor="position-filter" className="sr-only">
+                  Filter by position
+                </label>
+                <select
+                  id="position-filter"
+                  value={positionFilter}
+                  onChange={(e) => setPositionFilter(e.target.value)}
+                  className={`w-full appearance-none rounded-md border border-white/20 bg-white/10 py-2 pl-3 pr-9 text-sm outline-none transition focus:border-white/40 focus:ring-2 focus:ring-white/20 ${
+                    positionFilter ? "text-white" : "text-white/50"
+                  }`}
+                >
+                  <option value="" className="text-brand-green">
+                    All positions
+                  </option>
+                  {positionOptions.map((position) => (
+                    <option
+                      key={position}
+                      value={position}
+                      className="text-brand-green"
+                    >
+                      {position}
+                    </option>
+                  ))}
+                </select>
+                <svg
+                  className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                    clipRule="evenodd"
+                  />
+                </svg>
               </div>
               <button
                 type="button"
